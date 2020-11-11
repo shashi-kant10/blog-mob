@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">BlogMob</string>
+    <string name="app_desc">The Blogging App</string>
 </resources>
