@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".login.ProfileActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
@@ -26,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:text="@string/main_activity"
+            android:text="@string/user_profile"
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -34,14 +34,15 @@
     </androidx.appcompat.widget.Toolbar>
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/display_image_main"
+        android:id="@+id/display_image_profile"
         android:layout_width="170dp"
         android:layout_height="170dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp" />
+        android:layout_marginTop="20dp"
+        android:src="@drawable/icon_profile" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/text_input_layout_display_name_main"
+        android:id="@+id/text_input_layout_display_name_profile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -60,20 +61,12 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/button_update_main"
-        android:layout_width="match_parent"
+        android:id="@+id/button_save_profile"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
-        android:text="@string/update"
-        android:textColor="@color/white"
-        android:textStyle="bold" />
-
-    <Button
-        android:id="@+id/button_logout_main"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="@string/logout"
+        android:text="@string/save"
         android:textColor="@color/white"
         android:textStyle="bold" />
 

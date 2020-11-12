@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SplashScreenActivity">
+    tools:context=".login.SplashScreenActivity">
 
     <ImageView
         android:id="@+id/imageViewSplash"
@@ -26,10 +26,9 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="20dp"
         android:fontFamily="@font/montserrat"
-        android:text="@string/app_desc"
+        android:text="@string/app_desc_splash_screen"
         android:textColor="@color/dark_blue_custom"
         android:textSize="20sp"
-        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

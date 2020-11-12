@@ -1,4 +1,19 @@
 <resources>
     <string name="app_name">BlogMob</string>
-    <string name="app_desc">The Blogging App</string>
+    <string name="app_desc_splash_screen">BlogMob | The Blogging App</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="login">Login</string>
+    <string name="don_t_have_an_account_yet">Don\'t have an account yet?</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="signup">Signup</string>
+    <string name="signin">Signin</string>
+    <string name="display_name">Display name</string>
+    <string name="logout">Logout</string>
+    <string name="save">Save</string>
+    <string name="user_profile">User profile</string>
+    <string name="main_activity">Main Activity</string>
+    <string name="or">OR</string>
+    <string name="update">Update</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.shashi.blogmob
+package com.shashi.blogmob.login
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,6 +9,8 @@ import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.shashi.blogmob.MainActivity
+import com.shashi.blogmob.R
 
 
 class SplashScreenActivity : AppCompatActivity() {
@@ -20,6 +22,7 @@ class SplashScreenActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
 
+        //Hide status bar
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN
@@ -27,7 +30,7 @@ class SplashScreenActivity : AppCompatActivity() {
 
         val hander = Handler()
         hander.postDelayed({
-            startActivity(Intent(this@SplashScreenActivity, MainActivity::class.java))
+            startActivity(Intent(this@SplashScreenActivity, LoginActivity::class.java))
             finish()
         }, 2500)
 
