@@ -50,5 +50,5 @@ gradle-app.setting
 .gradletasknamecache
 /build/
 .gradle
-google-services.json
+app/google-services.json
 .app/

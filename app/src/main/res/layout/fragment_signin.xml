@@ -3,18 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="4dp">
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp"
+    android:orientation="vertical">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/text_input_layout_email_sign_in"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColorHint="@color/dark_blue_custom"
         app:errorEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:drawableStart="@drawable/icon_email"
+            android:drawablePadding="10dp"
+            android:fontFamily="@font/montserrat"
             android:hint="@string/email"
             android:inputType="textEmailAddress"
             android:maxLength="30" />
@@ -25,6 +30,8 @@
         android:id="@+id/text_input_layout_password_sign_in"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:textColorHint="@color/dark_blue_custom"
         app:counterEnabled="true"
         app:counterMaxLength="10"
         app:errorEnabled="true"
@@ -33,6 +40,9 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:drawableStart="@drawable/icon_password"
+            android:drawablePadding="10dp"
+            android:fontFamily="@font/montserrat"
             android:hint="@string/password"
             android:inputType="textPassword"
             android:maxLength="10" />
@@ -43,8 +53,15 @@
         android:id="@+id/button_signin_fragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/design_button"
+        android:elevation="10dp"
+        android:fontFamily="@font/montserrat"
         android:text="@string/signin"
         android:textColor="@color/white"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        android:textStyle="bold" />
 
 </LinearLayout>

@@ -9,6 +9,7 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="light_blue_custom">#25CCF7</color>
+    <color name="faded_blue">#aed6f1</color>
     <color name="dark_blue_custom">#30577a</color>
     <color name="white_custom">#FFFFFF</color>
     <color name="black_custom">#000000</color>

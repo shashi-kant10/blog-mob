@@ -2,11 +2,13 @@ package com.shashi.blogmob.login
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Window
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -19,6 +21,7 @@ import com.shashi.blogmob.MainActivity
 import com.shashi.blogmob.R
 import com.shashi.blogmob.databinding.ActivityLoginBinding
 
+
 class LoginActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityLoginBinding
@@ -27,7 +30,6 @@ class LoginActivity : AppCompatActivity() {
 
     lateinit var buttonSignup: Button
 
-    lateinit var textViewHeader: TextView
     lateinit var textViewFooter: TextView
 
     lateinit var signInButton: SignInButton
@@ -43,6 +45,7 @@ class LoginActivity : AppCompatActivity() {
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setStatusBarColor()
 
         firebaseAuth = FirebaseAuth.getInstance()
         val firebaseUser = firebaseAuth.currentUser
@@ -51,9 +54,6 @@ class LoginActivity : AppCompatActivity() {
             startActivity(Intent(this@LoginActivity, MainActivity::class.java))
             finish()
         }
-
-        val toolBar: Toolbar = binding.toolbarLogin
-        setSupportActionBar(toolBar)
 
         initViews()
 
@@ -69,7 +69,6 @@ class LoginActivity : AppCompatActivity() {
         signInButton = binding.googleSigninLogin
         signInButton.setOnClickListener { googleSignInClicked() }
 
-        textViewHeader = binding.textViewHeaderLogin
         textViewFooter = binding.textViewFooterLogin
 
     }
@@ -98,11 +97,9 @@ class LoginActivity : AppCompatActivity() {
 
     private fun changeViewText() {
         if (isSignupClicked) {
-            textViewHeader.text = getString(R.string.signup)
             textViewFooter.text = getString(R.string.already_have_an_account)
             buttonSignup.text = getString(R.string.signin)
         } else {
-            textViewHeader.text = getString(R.string.signin)
             textViewFooter.text = getString(R.string.don_t_have_an_account_yet)
             buttonSignup.text = getString(R.string.signup)
         }
@@ -162,6 +159,19 @@ class LoginActivity : AppCompatActivity() {
                 }
 
             }
+    }
+
+    private fun setStatusBarColor() {
+        val window: Window = this.window
+
+        // clear FLAG_TRANSLUCENT_STATUS flag:
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+
+        // add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+
+        // finally change the color
+        window.statusBarColor = ContextCompat.getColor(this, R.color.faded_blue)
     }
 
 }

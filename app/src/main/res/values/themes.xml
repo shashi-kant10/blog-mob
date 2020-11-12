@@ -1,12 +1,12 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.BlogMob" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.BlogMob" parent="Theme.AppCompat.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/light_blue_custom</item>
         <item name="colorPrimaryVariant">@color/dark_blue_custom</item>
-        <item name="colorOnPrimary">@color/light_blue_custom</item>
+        <item name="colorOnPrimary">@color/dark_blue_custom</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/light_blue_custom</item>
+        <item name="colorSecondary">@color/dark_blue_custom</item>
         <item name="colorSecondaryVariant">@color/dark_blue_custom</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
