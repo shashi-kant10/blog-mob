@@ -1,36 +1,28 @@
 package com.shashi.blogmob
 
-import android.Manifest
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.net.Uri
 import android.os.Bundle
-import android.widget.Button
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
+import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import com.etebarian.meowbottomnavigation.MeowBottomNavigation
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuth.AuthStateListener
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
-import com.karumi.dexter.Dexter
-import com.karumi.dexter.MultiplePermissionsReport
-import com.karumi.dexter.PermissionToken
-import com.karumi.dexter.listener.PermissionRequest
-import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import com.shashi.blogmob.login.GoogleSigninActivity
 import com.shashi.blogmob.login.LoginActivity
 import com.shashi.blogmob.login.ProfileActivity
+import com.shashi.blogmob.ui.HomeFragment
+import com.shashi.blogmob.ui.NewPostFragment
+import com.shashi.blogmob.ui.ProfileFragment
 import com.theartofdev.edmodo.cropper.CropImage
-import com.theartofdev.edmodo.cropper.CropImageView
-import de.hdodenhof.circleimageview.CircleImageView
-import java.io.InputStream
 
 
 class MainActivity : AppCompatActivity() {
@@ -38,21 +30,16 @@ class MainActivity : AppCompatActivity() {
     lateinit var firebaseFirestore: FirebaseFirestore
     private val COLLECTION_NAME = "users"
 
-    lateinit var circleImageView: CircleImageView
-
-    lateinit var textInputLayoutName: TextInputLayout
-    lateinit var previousImageUri: Uri
-    lateinit var updatedImageUri: Uri
-    private lateinit var bitmap: Bitmap
-
     lateinit var firebaseAuth: FirebaseAuth
     lateinit var authStateListener: AuthStateListener
+    lateinit var bottomNavigation: MeowBottomNavigation
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        initViews()
+        val toolbar: Toolbar = findViewById<Toolbar>(R.id.toolbar_main)
+        setSupportActionBar(toolbar)
 
         firebaseFirestore = FirebaseFirestore.getInstance()
         firebaseAuth = FirebaseAuth.getInstance()
@@ -61,28 +48,53 @@ class MainActivity : AppCompatActivity() {
             checkIfDataAvaiable()
         }
 
+        setNavBar()
+
         checkIfEmailVerified()
+    }
+
+    private fun setNavBar() {
+        bottomNavigation = findViewById(R.id.nav_view_main)
+        bottomNavigation.add(MeowBottomNavigation.Model(1, R.drawable.ic_home))
+        bottomNavigation.add(MeowBottomNavigation.Model(2, R.drawable.ic_new_post))
+        bottomNavigation.add(MeowBottomNavigation.Model(3, R.drawable.ic_profile))
+
+        bottomNavigation.show(1)
+        addFragment()
+
+        bottomNavigation.setOnClickMenuListener {
+            replaceFragment(it)
+        }
+    }
+
+    private fun replaceFragment(model: MeowBottomNavigation.Model) {
+
+        var fragment: Fragment? = null
+
+        when (model.id) {
+            1 -> fragment = HomeFragment()
+            2 -> fragment = NewPostFragment()
+            3 -> fragment = ProfileFragment()
+        }
+
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.frame_layout_main, fragment!!)
+            .commit()
+
+    }
+
+    private fun addFragment() {
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.frame_layout_main, HomeFragment())
+            .commit()
     }
 
     private fun checkIfEmailVerified() {
         if (!FirebaseAuth.getInstance().currentUser!!.isEmailVerified) {
             logout()
         }
-    }
-
-    private fun initViews() {
-
-        textInputLayoutName = findViewById(R.id.text_input_layout_display_name_main)
-
-        circleImageView = findViewById(R.id.display_image_main)
-
-        val buttonUpdate = findViewById<Button>(R.id.button_update_main)
-        val buttonLogout = findViewById<Button>(R.id.button_logout_main)
-
-        buttonUpdate.setOnClickListener { updateData() }
-        buttonLogout.setOnClickListener { logout() }
-        circleImageView.setOnClickListener { circleImageViewClicked() }
-
     }
 
     private fun checkIfDataAvaiable() {
@@ -92,21 +104,7 @@ class MainActivity : AppCompatActivity() {
             .document(userId)
             .get()
             .addOnSuccessListener { documentSnapshot -> //Check if the document exists
-                if (documentSnapshot.exists()) {
-
-                    var userName = documentSnapshot.getString("name")
-                    var imageUrl = documentSnapshot.getString("image")
-
-                    if (userName!!.isEmpty()) {
-                        userName = ""
-                    }
-                    if (imageUrl!!.isEmpty()) {
-                        imageUrl = ""
-                    }
-
-                    showData(userName, imageUrl)
-
-                } else {
+                if (!documentSnapshot.exists()) {
 
                     for (user in FirebaseAuth.getInstance().currentUser!!.providerData) {
                         if (user.providerId == "password") {
@@ -117,6 +115,7 @@ class MainActivity : AppCompatActivity() {
                             finish()
                         }
                     }
+
 
                 }
             }
@@ -131,191 +130,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun getUserID(): String {
         return FirebaseAuth.getInstance().currentUser!!.uid
-    }
-
-    private fun showData(userName: String, imageUrl: String) {
-        previousImageUri = Uri.parse(imageUrl)
-        updatedImageUri = Uri.parse(imageUrl)
-
-        textInputLayoutName.editText!!.setText(userName)
-
-        val placeolderRequest = RequestOptions()
-        placeolderRequest.placeholder(R.drawable.icon_profile)
-
-        Glide.with(this)
-            .setDefaultRequestOptions(placeolderRequest)
-            .load(imageUrl)
-            .into(circleImageView)
-    }
-
-    private fun updateData() {
-
-        val userName = textInputLayoutName.editText?.text.toString()
-
-        if (!isDataValid(userName)) {
-            return
-        }
-
-        if (previousImageUri == updatedImageUri) {
-            saveNameInFirestore(getUserID(), userName)
-        } else {
-            uploadImageInStorage(userName, getUserID())
-        }
-    }
-
-    private fun uploadImageInStorage(userName: String, userId: String) {
-
-        //Upload image in FirebaseStorage
-        val firebaseStorage = FirebaseStorage.getInstance()
-        val uploader = firebaseStorage.reference.child("profile_pictures").child("$userId.jpg")
-
-        uploader.putFile(updatedImageUri)
-            .addOnCompleteListener {
-                if (it.isSuccessful) {
-
-                    uploader
-                        .downloadUrl
-                        .addOnSuccessListener {
-                            saveDataInFirestore(userId, userName, it.toString())
-                        }
-
-                } else {
-                    Toast.makeText(this, "Could not upload image", Toast.LENGTH_SHORT).show()
-                    isProfileUpdateSuccessfull(false)
-                }
-            }
-
-    }
-
-    private fun saveNameInFirestore(userId: String, userName: String) {
-
-        //Update name in Firestore
-        val documentReference = firebaseFirestore
-            .collection(COLLECTION_NAME)
-            .document(userId)
-
-        val userData: MutableMap<String, Any> = HashMap()
-        userData["name"] = userName
-
-        documentReference.update(userData)
-            .addOnSuccessListener {
-                isProfileUpdateSuccessfull(true)
-            }
-            .addOnFailureListener {
-                Toast.makeText(this, "Could not update name", Toast.LENGTH_SHORT).show()
-                isProfileUpdateSuccessfull(false)
-            }
-
-    }
-
-    private fun saveDataInFirestore(userId: String, userName: String, uploadedImageUri: String) {
-
-        //Update name in Firestore
-        val documentReference = firebaseFirestore
-            .collection(COLLECTION_NAME)
-            .document(userId)
-
-        val userData: MutableMap<String, Any> = HashMap()
-        userData["name"] = userName
-        userData["image"] = uploadedImageUri
-
-        documentReference.set(userData)
-            .addOnSuccessListener {
-                isProfileUpdateSuccessfull(true)
-            }
-            .addOnFailureListener {
-                Toast.makeText(this, "Could not update name", Toast.LENGTH_SHORT).show()
-                isProfileUpdateSuccessfull(false)
-            }
-
-    }
-
-    private fun isProfileUpdateSuccessfull(isSuccessful: Boolean) {
-
-        if (isSuccessful) {
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
-        }
-
-    }
-
-    private fun isDataValid(userName: String): Boolean {
-        if (userName.isEmpty()) {
-            textInputLayoutName.error = "Cannot be empty"
-            return false
-        } else {
-            textInputLayoutName.error = null
-        }
-
-        if (previousImageUri == Uri.EMPTY) {
-            Toast.makeText(this, "Image not selected", Toast.LENGTH_SHORT).show()
-            return false
-        }
-
-        return true
-    }
-
-    private fun circleImageViewClicked() {
-        permissionCheck()
-    }
-
-    private fun permissionCheck() {
-
-        Dexter.withContext(this)
-            .withPermissions(
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-            ).withListener(object : MultiplePermissionsListener {
-                override fun onPermissionsChecked(report: MultiplePermissionsReport) {
-                    if (report.areAllPermissionsGranted()) {
-                        createIntent()
-                    }
-                }
-
-                override fun onPermissionRationaleShouldBeShown(
-                    permissions: List<PermissionRequest>,
-                    token: PermissionToken
-                ) {
-                    token.continuePermissionRequest()
-                }
-            }).check()
-
-    }
-
-    private fun createIntent() {
-
-        CropImage.activity()
-            .setGuidelines(CropImageView.Guidelines.ON)
-            .setAspectRatio(1, 1)
-            .start(this)
-
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-
-            val result = CropImage.getActivityResult(data)
-
-            if (resultCode == RESULT_OK) {
-
-                updatedImageUri = result.uri
-                val inputStream: InputStream =
-                    contentResolver.openInputStream(updatedImageUri)!!
-                bitmap = BitmapFactory.decodeStream(inputStream)
-                circleImageView.setImageBitmap(bitmap)
-
-            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                Toast.makeText(
-                    this,
-                    "Something went wrong while loading image",
-                    Toast.LENGTH_SHORT
-                )
-                    .show()
-            }
-        }
-
     }
 
     private fun logout() {
@@ -340,6 +154,19 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val menuInflater = menuInflater
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_item_logout -> logout()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun onStart() {
         super.onStart()
         firebaseAuth.addAuthStateListener(authStateListener)
@@ -349,6 +176,39 @@ class MainActivity : AppCompatActivity() {
         super.onStop()
         if (authStateListener != null) {
             firebaseAuth.removeAuthStateListener(authStateListener)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            onActivityRequestResult(
+                requestCode,
+                resultCode,
+                data!!,
+                "ProfileFragment"
+            )
+        }
+    }
+
+    private fun onActivityRequestResult(
+        requestCode: Int,
+        resultCode: Int,
+        data: Intent,
+        fragmentName: String
+    ) {
+        try {
+            val fm: FragmentManager = supportFragmentManager
+            if (fm.fragments.size > 0) {
+                for (i in 0 until fm.fragments.size) {
+                    val fragment: Fragment = fm.fragments[i]
+                    if (fragment.javaClass.simpleName.equals(fragmentName, ignoreCase = true)) {
+                        fragment.onActivityResult(requestCode, resultCode, data)
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 

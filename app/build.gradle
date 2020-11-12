@@ -82,4 +82,7 @@ dependencies {
 
     //For Gmail signin
     implementation 'com.google.android.gms:play-services-auth:18.1.0'
+
+    //Meow Bottom Navigation
+    implementation 'com.etebarian:meow-bottom-navigation:1.0.4'
 }

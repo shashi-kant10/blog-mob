@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".MainActivity">
 
     <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/purple_500"
+        android:background="@color/dark_blue_custom"
         android:contentInsetStart="0dp"
         android:contentInsetLeft="0dp"
         android:contentInsetEnd="0dp"
@@ -19,62 +19,45 @@
         app:contentInsetEnd="0dp"
         app:contentInsetLeft="0dp"
         app:contentInsetRight="0dp"
-        app:contentInsetStart="0dp">
+        app:contentInsetStart="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/toolbar_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat"
             android:gravity="center_horizontal"
-            android:text="@string/main_activity"
-            android:textColor="@color/white"
+            android:text="@string/app_name"
+            android:textColor="@color/faded_blue"
             android:textSize="20sp"
             android:textStyle="bold" />
 
     </androidx.appcompat.widget.Toolbar>
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/display_image_main"
-        android:layout_width="170dp"
-        android:layout_height="170dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp" />
+    <FrameLayout
+        android:id="@+id/frame_layout_main"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:padding="1dp"
+        app:layout_constraintBottom_toTopOf="@id/nav_view_main"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_main" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/text_input_layout_display_name_main"
+    <com.etebarian.meowbottomnavigation.MeowBottomNavigation
+        android:id="@+id/nav_view_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="10dp"
-        app:errorEnabled="true">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:mbn_backgroundBottomColor="@color/dark_blue_custom"
+        app:mbn_defaultIconColor="#8395A7"
+        app:mbn_rippleColor="#8395A7"
+        app:mbn_selectedIconColor="@color/faded_blue"
+        app:mbn_shadowColor="#1f212121" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/display_name"
-            android:inputType="textPersonName"
-            android:maxLength="20" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <Button
-        android:id="@+id/button_update_main"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="@string/update"
-        android:textColor="@color/white"
-        android:textStyle="bold" />
-
-    <Button
-        android:id="@+id/button_logout_main"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="@string/logout"
-        android:textColor="@color/white"
-        android:textStyle="bold" />
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
