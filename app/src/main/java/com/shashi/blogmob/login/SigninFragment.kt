@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.android.material.textfield.TextInputLayout
@@ -20,6 +21,8 @@ import com.shashi.blogmob.R
 
 
 class SigninFragment : Fragment() {
+
+    private lateinit var progressBar: ProgressBar
 
     lateinit var buttonSignin: Button
     lateinit var textInputLayoutEmail: TextInputLayout
@@ -42,6 +45,8 @@ class SigninFragment : Fragment() {
 
     private fun initViews(view: View) {
 
+        progressBar = view.findViewById(R.id.progressBarSignin)
+
         buttonSignin = view.findViewById(R.id.button_signin_fragment)
         textInputLayoutEmail = view.findViewById(R.id.text_input_layout_email_sign_in)
         textInputLayoutPassword = view.findViewById(R.id.text_input_layout_password_sign_in)
@@ -51,10 +56,13 @@ class SigninFragment : Fragment() {
 
     private fun signinClicked() {
 
+        progressBar.visibility = View.VISIBLE
+
         val userEmail: String = textInputLayoutEmail.editText?.text.toString()
         val userPassword: String = textInputLayoutPassword.editText?.text.toString()
 
         if (!isValid(userEmail, userPassword)) {
+            progressBar.visibility = View.GONE
             return
         }
 
@@ -70,12 +78,16 @@ class SigninFragment : Fragment() {
                 if (firebaseAuth.currentUser!!.isEmailVerified) {
                     checkIfDataAvaiable()
                 } else {
+
+                    progressBar.visibility = View.GONE
                     Toast.makeText(activity, "Verify your email to sign-in", Toast.LENGTH_SHORT)
                         .show()
                 }
 
             }
             .addOnFailureListener { e ->
+                progressBar.visibility = View.GONE
+
                 if (e is FirebaseAuthInvalidCredentialsException) {
                     textInputLayoutPassword.error = "Invalid Password"
                 } else {
@@ -99,17 +111,21 @@ class SigninFragment : Fragment() {
             .addOnSuccessListener { documentSnapshot -> //Check if the document exists
                 if (documentSnapshot.exists()) {
 
+                    progressBar.visibility = View.GONE
                     startActivity(Intent(activity, MainActivity::class.java))
                     activity?.finish()
 
                 } else {
 
+                    progressBar.visibility = View.GONE
                     startActivity(Intent(activity, ProfileActivity::class.java))
                     activity?.finish()
 
                 }
             }
             .addOnFailureListener {
+                progressBar.visibility = View.GONE
+
                 Toast.makeText(
                     activity,
                     "Please check your internet connection",

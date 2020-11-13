@@ -7,6 +7,16 @@
     android:layout_marginEnd="10dp"
     android:orientation="vertical">
 
+    <ProgressBar
+        android:id="@+id/progressBarSignup"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/dark_blue_custom"
+        android:indeterminateTintMode="src_atop"
+        android:visibility="invisible" />
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/text_input_layout_email_sign_up"
         android:layout_width="match_parent"

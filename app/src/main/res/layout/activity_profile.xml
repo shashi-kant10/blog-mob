@@ -33,6 +33,16 @@
 
     </androidx.appcompat.widget.Toolbar>
 
+    <ProgressBar
+        android:id="@+id/progressBarCreateProfile"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/dark_blue_custom"
+        android:indeterminateTintMode="src_atop"
+        android:visibility="invisible" />
+
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/display_image_profile"
         android:layout_width="170dp"

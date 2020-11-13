@@ -8,7 +8,9 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.view.View
 import android.widget.Button
+import android.widget.ProgressBar
 import android.widget.Toast
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -33,6 +35,7 @@ class GoogleSigninActivity : AppCompatActivity() {
     private lateinit var userId: String
     private val COLLECTION_NAME = "users"
 
+    private lateinit var progressBar: ProgressBar
     private lateinit var buttonSave: Button
     private lateinit var textInputLayoutName: TextInputLayout
 
@@ -59,6 +62,8 @@ class GoogleSigninActivity : AppCompatActivity() {
     }
 
     private fun initViews() {
+        progressBar = findViewById(R.id.progressBarGoogleSignin)
+
         buttonSave = findViewById(R.id.button_save_google)
         textInputLayoutName = findViewById(R.id.text_input_layout_display_name_google)
 
@@ -70,6 +75,8 @@ class GoogleSigninActivity : AppCompatActivity() {
 
     private fun checkIfDataAvaiable() {
 
+        progressBar.visibility = View.VISIBLE
+
         //If data present, [Id created] then go to Main Activity
         firebaseFirestore.collection(COLLECTION_NAME)
             .document(userId)
@@ -77,9 +84,12 @@ class GoogleSigninActivity : AppCompatActivity() {
             .addOnSuccessListener { documentSnapshot -> //Check if the document exists
                 if (documentSnapshot.exists()) {
 
+                    progressBar.visibility = View.GONE
                     startActivity(Intent(this, MainActivity::class.java))
                     finish()
 
+                }else{
+                    progressBar.visibility = View.GONE
                 }
             }
             .addOnFailureListener {
@@ -88,13 +98,17 @@ class GoogleSigninActivity : AppCompatActivity() {
                     "Please check your internet connection",
                     Toast.LENGTH_SHORT
                 ).show()
+                progressBar.visibility = View.GONE
             }
     }
 
     private fun saveClicked() {
 
+        progressBar.visibility = View.VISIBLE
+
         val userName = textInputLayoutName.editText?.text.toString()
         if (!isNameValid(userName)) {
+            progressBar.visibility = View.GONE
             return
         }
 
@@ -120,6 +134,7 @@ class GoogleSigninActivity : AppCompatActivity() {
 
                 } else {
                     Toast.makeText(this, "Could not upload image", Toast.LENGTH_SHORT).show()
+                    progressBar.visibility = View.GONE
                     isProfileUpdateSuccessfull(false)
                 }
             }
@@ -142,6 +157,7 @@ class GoogleSigninActivity : AppCompatActivity() {
                 isProfileUpdateSuccessfull(true)
             }
             .addOnFailureListener {
+                progressBar.visibility = View.GONE
                 Toast.makeText(this, "Could not update name", Toast.LENGTH_SHORT).show()
                 isProfileUpdateSuccessfull(false)
             }
@@ -151,6 +167,7 @@ class GoogleSigninActivity : AppCompatActivity() {
     private fun isProfileUpdateSuccessfull(isSuccessful: Boolean) {
 
         if (isSuccessful) {
+            progressBar.visibility = View.GONE
             startActivity(Intent(this, MainActivity::class.java))
             finish()
         }

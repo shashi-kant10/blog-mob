@@ -21,7 +21,7 @@ import com.shashi.blogmob.login.LoginActivity
 import com.shashi.blogmob.login.ProfileActivity
 import com.shashi.blogmob.ui.HomeFragment
 import com.shashi.blogmob.ui.NewPostFragment
-import com.shashi.blogmob.ui.ProfileFragment
+import com.shashi.blogmob.ui.UserProfileFragment
 import com.theartofdev.edmodo.cropper.CropImage
 
 
@@ -74,7 +74,7 @@ class MainActivity : AppCompatActivity() {
         when (model.id) {
             1 -> fragment = HomeFragment()
             2 -> fragment = NewPostFragment()
-            3 -> fragment = ProfileFragment()
+            3 -> fragment = UserProfileFragment()
         }
 
         supportFragmentManager
@@ -186,7 +186,7 @@ class MainActivity : AppCompatActivity() {
                 requestCode,
                 resultCode,
                 data!!,
-                "ProfileFragment"
+                "UserProfileFragment"
             )
         }
     }

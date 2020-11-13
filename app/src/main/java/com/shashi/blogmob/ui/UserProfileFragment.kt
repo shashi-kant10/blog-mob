@@ -3,6 +3,7 @@ package com.shashi.blogmob.ui
 import android.Manifest
 import android.app.Activity
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -11,8 +12,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -31,11 +34,12 @@ import com.theartofdev.edmodo.cropper.CropImageView
 import de.hdodenhof.circleimageview.CircleImageView
 import java.io.InputStream
 
-class ProfileFragment : Fragment() {
+class UserProfileFragment : Fragment() {
 
     lateinit var firebaseFirestore: FirebaseFirestore
     private val COLLECTION_NAME = "users"
 
+    lateinit var progressBar: ProgressBar
     lateinit var circleImageView: CircleImageView
 
     lateinit var textInputLayoutName: TextInputLayout
@@ -70,6 +74,8 @@ class ProfileFragment : Fragment() {
 
         mActivity = activity!!
 
+        progressBar = view.findViewById(R.id.progressBarUserProfile)
+
         textInputLayoutName = view.findViewById(R.id.text_input_layout_display_name_userprofile)
 
         circleImageView = view.findViewById(R.id.display_image_userprofile)
@@ -82,6 +88,8 @@ class ProfileFragment : Fragment() {
     }
 
     private fun checkIfDataAvaiable() {
+
+        progressBar.visibility = View.VISIBLE
 
         val userId = getUserID()
 
@@ -111,7 +119,13 @@ class ProfileFragment : Fragment() {
                     "Please check your internet connection",
                     Toast.LENGTH_SHORT
                 ).show()
+
+                progressBar.visibility = View.GONE
+
             }
+
+        progressBar.visibility = View.GONE
+
     }
 
     private fun getUserID(): String {
@@ -132,13 +146,19 @@ class ProfileFragment : Fragment() {
             .setDefaultRequestOptions(placeolderRequest)
             .load(imageUrl)
             .into(circleImageView)
+
+        progressBar.visibility = View.GONE
+
     }
 
     private fun updateData() {
 
+        progressBar.visibility = View.VISIBLE
+
         val userName = textInputLayoutName.editText?.text.toString()
 
         if (!isDataValid(userName)) {
+            progressBar.visibility = View.GONE
             return
         }
 
@@ -166,6 +186,7 @@ class ProfileFragment : Fragment() {
                         }
 
                 } else {
+                    progressBar.visibility = View.GONE
                     Toast.makeText(mActivity, "Could not upload image", Toast.LENGTH_SHORT).show()
                     isProfileUpdateSuccessfull(false)
                 }
@@ -188,6 +209,7 @@ class ProfileFragment : Fragment() {
                 isProfileUpdateSuccessfull(true)
             }
             .addOnFailureListener {
+                progressBar.visibility = View.GONE
                 Toast.makeText(mActivity, "Could not update name", Toast.LENGTH_SHORT).show()
                 isProfileUpdateSuccessfull(false)
             }
@@ -217,6 +239,8 @@ class ProfileFragment : Fragment() {
     }
 
     private fun isProfileUpdateSuccessfull(isSuccessful: Boolean) {
+
+        progressBar.visibility = View.GONE
 
         if (isSuccessful) {
             Toast.makeText(mActivity, "Updated", Toast.LENGTH_SHORT).show()

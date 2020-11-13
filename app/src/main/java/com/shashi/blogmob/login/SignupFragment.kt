@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.android.material.textfield.TextInputLayout
@@ -15,6 +16,8 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.shashi.blogmob.R
 
 class SignupFragment : Fragment() {
+
+    private lateinit var progressBar: ProgressBar
 
     lateinit var buttonSignin: Button
     lateinit var textInputLayoutEmail: TextInputLayout
@@ -37,6 +40,8 @@ class SignupFragment : Fragment() {
     }
 
     private fun initViews(view: View) {
+        progressBar = view.findViewById(R.id.progressBarSignup)
+
         buttonSignin = view.findViewById(R.id.button_signup_fragment)
         textInputLayoutEmail = view.findViewById(R.id.text_input_layout_email_sign_up)
         textInputLayoutPassword = view.findViewById(R.id.text_input_layout_password_sign_up)
@@ -47,12 +52,14 @@ class SignupFragment : Fragment() {
     }
 
     private fun signupClicked() {
+        progressBar.visibility = View.VISIBLE
 
         val userEmail: String = textInputLayoutEmail.editText?.text.toString()
         val userPassword: String = textInputLayoutPassword.editText?.text.toString()
         val userPasswordConfirm = textInputLayoutConfirmPassword.editText?.text.toString()
 
         if (!isValid(userEmail, userPassword, userPasswordConfirm)) {
+            progressBar.visibility = View.GONE
             return
         }
 
@@ -73,12 +80,16 @@ class SignupFragment : Fragment() {
                     user!!.sendEmailVerification()
                         .addOnCompleteListener {
                             if (it.isSuccessful) {
+                                progressBar.visibility = View.GONE
+
                                 Toast.makeText(
                                     activity,
                                     "An email verification link is sent to you",
                                     Toast.LENGTH_SHORT
                                 ).show()
                             } else {
+                                progressBar.visibility = View.GONE
+
                                 Toast.makeText(
                                     activity,
                                     "Could not send email verification",
@@ -90,6 +101,8 @@ class SignupFragment : Fragment() {
                 }
             }
             .addOnFailureListener { e ->
+                progressBar.visibility = View.GONE
+
                 if (e is FirebaseAuthUserCollisionException) {
                     textInputLayoutEmail.error = "Email already in use"
                 } else {

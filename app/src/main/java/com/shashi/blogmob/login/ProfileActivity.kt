@@ -7,7 +7,9 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import com.shashi.blogmob.R
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputLayout
@@ -32,6 +34,7 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var userId: String
     private val COLLECTION_NAME = "users"
 
+    private lateinit var progressBar: ProgressBar
     private lateinit var buttonSave: Button
     private lateinit var textInputLayoutName: TextInputLayout
 
@@ -51,6 +54,8 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun initViews() {
+        progressBar = findViewById(R.id.progressBarCreateProfile)
+
         buttonSave = findViewById(R.id.button_save_profile)
         textInputLayoutName = findViewById(R.id.text_input_layout_display_name_profile)
 
@@ -62,8 +67,11 @@ class ProfileActivity : AppCompatActivity() {
 
     private fun saveClicked() {
 
+        progressBar.visibility = View.VISIBLE
+
         val userName = textInputLayoutName.editText?.text.toString()
         if (!isNameValid(userName)) {
+            progressBar.visibility = View.GONE
             return
         }
 
@@ -88,6 +96,7 @@ class ProfileActivity : AppCompatActivity() {
                         }
 
                 } else {
+                    progressBar.visibility = View.GONE
                     Toast.makeText(this, "Could not upload image", Toast.LENGTH_SHORT).show()
                     isProfileUpdateSuccessfull(false)
                 }
@@ -111,6 +120,7 @@ class ProfileActivity : AppCompatActivity() {
                 isProfileUpdateSuccessfull(true)
             }
             .addOnFailureListener {
+                progressBar.visibility = View.GONE
                 Toast.makeText(this, "Could not update name", Toast.LENGTH_SHORT).show()
                 isProfileUpdateSuccessfull(false)
             }
@@ -118,6 +128,8 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun isProfileUpdateSuccessfull(isSuccessful: Boolean) {
+
+        progressBar.visibility = View.GONE
 
         if (isSuccessful) {
             startActivity(Intent(this, MainActivity::class.java))
