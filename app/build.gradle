@@ -85,4 +85,8 @@ dependencies {
 
     //Meow Bottom Navigation
     implementation 'com.etebarian:meow-bottom-navigation:1.0.4'
+
+    //Expandable Card View
+    implementation 'com.alespero:expandable-cardview:0.8'
+
 }

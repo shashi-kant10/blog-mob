@@ -14,6 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BlogMob">
+        <activity android:name=".others.AboutActivity"></activity>
         <activity android:name=".login.GoogleSigninActivity" />
         <activity android:name=".login.LoginActivity" />
         <activity android:name=".login.ProfileActivity" />
@@ -28,6 +29,7 @@
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

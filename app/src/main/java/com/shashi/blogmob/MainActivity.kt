@@ -2,9 +2,13 @@ package com.shashi.blogmob
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.Button
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
@@ -19,6 +23,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.shashi.blogmob.login.GoogleSigninActivity
 import com.shashi.blogmob.login.LoginActivity
 import com.shashi.blogmob.login.ProfileActivity
+import com.shashi.blogmob.others.AboutActivity
 import com.shashi.blogmob.ui.HomeFragment
 import com.shashi.blogmob.ui.NewPostFragment
 import com.shashi.blogmob.ui.UserProfileFragment
@@ -132,6 +137,30 @@ class MainActivity : AppCompatActivity() {
         return FirebaseAuth.getInstance().currentUser!!.uid
     }
 
+    private fun logoutClicked() {
+
+        val layoutInflater = LayoutInflater.from(this)
+        val layoutView: View = layoutInflater.inflate(R.layout.dialog_logout, null)
+
+        val alertDialog: AlertDialog.Builder = AlertDialog.Builder(this).setView(layoutView)
+        alertDialog.setCancelable(true)
+        val testDialog: AlertDialog = alertDialog.create()
+        testDialog.show()
+
+        val buttonCancel: Button = layoutView.findViewById(R.id.button_dialog_cancel)
+        val buttonLogout: Button = layoutView.findViewById(R.id.button_dialog_logout)
+
+        buttonCancel.setOnClickListener {
+            testDialog.dismiss() // to dismiss
+        }
+
+        buttonLogout.setOnClickListener {
+            logout()
+            testDialog.dismiss() // to dismiss
+        }
+
+    }
+
     private fun logout() {
 
         FirebaseAuth.getInstance().signOut()
@@ -162,9 +191,14 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.menu_item_logout -> logout()
+            R.id.menu_item_logout -> logoutClicked()
+            R.id.menu_item_others -> othersCalled()
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun othersCalled() {
+        startActivity(Intent(this, AboutActivity::class.java))
     }
 
     override fun onStart() {
