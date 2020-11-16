@@ -26,6 +26,8 @@ import com.shashi.blogmob.R
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import java.io.InputStream
+import java.util.*
+import kotlin.collections.HashMap
 
 class NewPostFragment : Fragment() {
 
@@ -78,7 +80,7 @@ class NewPostFragment : Fragment() {
 
         progressBar.visibility = View.VISIBLE
 
-        val blogDescription = editTextDescription.text.toString()
+        val blogDescription = editTextDescription.text.toString().trim()
         if (!isBlogValid(blogDescription)) {
             progressBar.visibility = View.GONE
             return
@@ -91,7 +93,11 @@ class NewPostFragment : Fragment() {
     private fun postBlog(blogDescription: String) {
 
         //Upload image in FirebaseStorage
-        val randomImageName: String = FieldValue.serverTimestamp().toString()
+
+        val random = Random()
+        println(random.nextInt(1..100))
+
+        val randomImageName: String = FieldValue.serverTimestamp().toString() + random.toString()
 
         val firebaseStorage = FirebaseStorage.getInstance()
         val uploader =
@@ -104,7 +110,7 @@ class NewPostFragment : Fragment() {
                     uploader
                         .downloadUrl
                         .addOnSuccessListener {
-                            saveDataInFirestore(blogDescription, it.toString(), randomImageName)
+                            saveDataInFirestore(blogDescription, it.toString())
                         }
 
                 } else {
@@ -119,17 +125,16 @@ class NewPostFragment : Fragment() {
 
     private fun saveDataInFirestore(
         blogDescription: String,
-        uploadedImageUri: String,
-        randomImageName: String
+        uploadedImageUri: String
     ) {
 
-        //Update name in Firestore
+        //Save blog in Firestore
 
         val blogData: MutableMap<String, Any> = HashMap()
         blogData["image_url"] = uploadedImageUri
         blogData["desc"] = blogDescription
         blogData["user_id"] = userId
-        blogData["timestamp"] = randomImageName
+        blogData["timestamp"] = FieldValue.serverTimestamp()
 
         firebaseFirestore
             .collection(COLLECTION_NAME)
@@ -222,6 +227,10 @@ class NewPostFragment : Fragment() {
         }
 
         return true
+    }
+
+    fun Random.nextInt(range: IntRange): Int {
+        return range.start + nextInt(range.last - range.start)
     }
 
 }

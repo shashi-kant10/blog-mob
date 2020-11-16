@@ -90,7 +90,7 @@ class ProfileActivity : AppCompatActivity() {
                 if (it.isSuccessful) {
 
                     uploader
-                            .downloadUrl
+                        .downloadUrl
                         .addOnSuccessListener {
                             saveDataInFirestore(userId, userName, it.toString())
                         }
