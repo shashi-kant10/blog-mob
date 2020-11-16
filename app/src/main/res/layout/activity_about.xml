@@ -103,7 +103,7 @@
                         android:fontFamily="@font/montserrat"
                         android:text="@string/about_text"
                         android:textColor="@color/black"
-                        android:textSize="16sp" />
+                        android:textSize="15sp" />
 
                 </LinearLayout>
 
@@ -192,7 +192,7 @@
                         android:fontFamily="@font/montserrat"
                         android:text="@string/terms_and_condition_text"
                         android:textColor="@color/black"
-                        android:textSize="16sp" />
+                        android:textSize="15sp" />
 
                 </LinearLayout>
 
@@ -282,7 +282,7 @@
                         android:fontFamily="@font/montserrat"
                         android:text="@string/privacy_policy_text"
                         android:textColor="@color/black"
-                        android:textSize="16sp" />
+                        android:textSize="15sp" />
 
                 </LinearLayout>
 

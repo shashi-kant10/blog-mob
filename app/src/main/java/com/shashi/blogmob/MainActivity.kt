@@ -236,9 +236,7 @@ class MainActivity : AppCompatActivity() {
             if (fm.fragments.size > 0) {
                 for (i in 0 until fm.fragments.size) {
                     val fragment: Fragment = fm.fragments[i]
-                    if (fragment.javaClass.simpleName.equals(fragmentName, ignoreCase = true)) {
-                        fragment.onActivityResult(requestCode, resultCode, data)
-                    }
+                    fragment.onActivityResult(requestCode, resultCode, data)
                 }
             }
         } catch (e: Exception) {

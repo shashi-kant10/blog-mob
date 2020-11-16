@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/montserrat"
             android:text="@string/app_name"
-            android:textColor="@color/faded_blue"
+            android:textColor="@color/grey_custom"
             android:textSize="20sp"
             android:textStyle="bold" />
 

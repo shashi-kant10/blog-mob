@@ -16,7 +16,7 @@
     <string name="or">OR</string>
     <string name="update">Update</string>
     <string name="logout">Logout</string>
-    <string name="create_a_post">Create a Post</string>
+    <string name="create_a_blog">Create a Blog</string>
     <string name="about">About</string>
     <string name="about_text">BlogMob | The Blogging App\n\nBlogMob is a blogging app where users can create and post blogs. These blogs can contains texts as well as images</string>
     <string name="terms_and_condition">Terms &amp; Conditions</string>
@@ -27,4 +27,6 @@
     <string name="logout_dialog_text">Confirm logout</string>
     <string name="cancel">Cancel</string>
     <string name="logout_confirm_text">Are you sure you want to logout?</string>
+    <string name="add_description">Add description</string>
+    <string name="post_blog">Post Blog</string>
 </resources>
