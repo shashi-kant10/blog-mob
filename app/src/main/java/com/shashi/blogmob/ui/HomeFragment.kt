@@ -1,7 +1,6 @@
 package com.shashi.blogmob.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.QueryDocumentSnapshot
+import com.google.firebase.firestore.Query
 import com.shashi.blogmob.BlogAdapter
 import com.shashi.blogmob.R
 import com.shashi.blogmob.model.BlogPostModel
@@ -61,8 +60,11 @@ class HomeFragment : Fragment() {
 
         progressBar.visibility = View.VISIBLE
 
-        firebaseFirestore
+        val firstQuery: Query = firebaseFirestore
             .collection(COLLECTION_NAME)
+            .orderBy("timestamp", Query.Direction.DESCENDING)
+
+        firstQuery
             .addSnapshotListener { value, error ->
 
                 for (document in value!!.documentChanges) {

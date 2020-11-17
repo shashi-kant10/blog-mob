@@ -3,24 +3,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="4dp">
+    android:layout_height="wrap_content">
 
-    <androidx.cardview.widget.CardView
+    <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/tools"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         android:background="@color/white"
         android:elevation="10dp"
         app:cardCornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        card_view:cardUseCompatPadding="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="7dp">
+            android:padding="10dp">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/circle_image_view_blog_item"
@@ -55,7 +57,7 @@
             <ImageView
                 android:id="@+id/image_view_blog_item"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="200dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:elevation="10dp"

@@ -32,14 +32,18 @@ class BlogAdapter : RecyclerView.Adapter<BlogViewHolder>() {
         val description = blogItems.get(position).desc
         val image_url = blogItems.get(position).image_url
         val userId = blogItems.get(position).user_id
-        val timestamp: Long = blogItems.get(position).timestamp.seconds
+
+        try {
+            val timestamp: Long = blogItems.get(position).timestamp!!.seconds
+            holder.blogTime.text = getDate(timestamp)
+        } catch (e: Exception) {
+            holder.blogTime.text = ""
+        }
 
         holder.blogDescription.text = description
         Glide.with(holder.itemView.context).load(image_url).into(holder.blogImageView)
 
         holder.showUserName(userId)
-
-        holder.blogTime.text = getDate(timestamp)
     }
 
     override fun getItemCount(): Int {
