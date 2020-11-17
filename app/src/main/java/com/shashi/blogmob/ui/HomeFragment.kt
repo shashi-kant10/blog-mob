@@ -19,6 +19,7 @@ import com.shashi.blogmob.model.BlogPostModel
 class HomeFragment : Fragment() {
 
     private lateinit var blogItems: ArrayList<BlogPostModel>
+    private lateinit var blogId: ArrayList<String>
     private lateinit var recyclerView: RecyclerView
     private lateinit var blogAdapter: BlogAdapter
 
@@ -53,6 +54,7 @@ class HomeFragment : Fragment() {
         progressBar = view.findViewById(R.id.progress_bar_home)
 
         blogItems = ArrayList()
+        blogId = ArrayList()
         blogAdapter = BlogAdapter()
 
         recyclerView = view.findViewById(R.id.recycler_view_home)
@@ -91,16 +93,22 @@ class HomeFragment : Fragment() {
 
                 for (document in value!!.documentChanges) {
                     if (document.type == DocumentChange.Type.ADDED) {
+
                         val blogPostModel: BlogPostModel =
                             document.document.toObject(BlogPostModel::class.java)
+                        val blogDocumentId: String = document.document.id
 
-                        if (isFirestPageFirstLoad)
+                        if (isFirestPageFirstLoad) {
                             blogItems.add(blogPostModel)
-                        else
+                            blogId.add(blogDocumentId)
+                        } else {
                             blogItems.add(0, blogPostModel)
+                            blogId.add(0, blogDocumentId)
+                        }
+
                     }
 
-                    blogAdapter.updateBlogList(blogItems)
+                    blogAdapter.updateBlogList(blogItems, blogId)
                 }
 
                 isFirestPageFirstLoad = false
@@ -114,13 +122,13 @@ class HomeFragment : Fragment() {
 
     private fun loadMorePost() {
 
-        val firstQuery: Query = firebaseFirestore
+        val newQuery: Query = firebaseFirestore
             .collection(COLLECTION_NAME)
             .orderBy("timestamp", Query.Direction.DESCENDING)
             .startAfter(lastVisible)
             .limit(3)
 
-        firstQuery
+        newQuery
             .addSnapshotListener { value, error ->
 
                 if (!value!!.isEmpty) {
@@ -131,11 +139,13 @@ class HomeFragment : Fragment() {
                         if (document.type == DocumentChange.Type.ADDED) {
                             val blogPostModel: BlogPostModel =
                                 document.document.toObject(BlogPostModel::class.java)
+                            val blogDocumentId: String = document.document.id
 
                             blogItems.add(blogPostModel)
+                            blogId.add(blogDocumentId)
                         }
 
-                        blogAdapter.updateBlogList(blogItems)
+                        blogAdapter.updateBlogList(blogItems, blogId)
                     }
 
                 }

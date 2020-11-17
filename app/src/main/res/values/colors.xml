@@ -15,4 +15,7 @@
     <color name="black_custom">#000000</color>
     <color name="grey_custom">#f0f0f0</color>
     <color name="colorRed">#E71C23</color>
+
+    <color name="like_button_grey">#747474</color>
+    <color name="like_button_red">#E71C23</color>
 </resources>

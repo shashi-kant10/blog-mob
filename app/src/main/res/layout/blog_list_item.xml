@@ -75,11 +75,32 @@
                 android:fontFamily="@font/montserrat"
                 android:padding="7dp"
                 android:textColor="@color/black"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/image_view_blog_item"
                 app:layout_constraintStart_toStartOf="@id/image_view_blog_item"
                 app:layout_constraintTop_toBottomOf="@id/image_view_blog_item"
                 tools:text="Description..." />
+
+            <ImageView
+                android:id="@+id/image_view_like_blog_item"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/icon_like_grey"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_View_description_blog_item"
+                card_view:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/text_view_like_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:fontFamily="@font/montserrat"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/image_view_like_blog_item"
+                app:layout_constraintTop_toBottomOf="@id/text_View_description_blog_item"
+                tools:text="0 likes" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
