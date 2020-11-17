@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -60,7 +61,7 @@ class HomeFragment : Fragment() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
 
-                val isReachedBottom: Boolean = recyclerView.canScrollVertically(1)
+                val isReachedBottom: Boolean = !recyclerView.canScrollVertically(1)
                 if (isReachedBottom) {
                     loadMorePost()
                 }
@@ -77,7 +78,7 @@ class HomeFragment : Fragment() {
         val firstQuery: Query = firebaseFirestore
             .collection(COLLECTION_NAME)
             .orderBy("timestamp", Query.Direction.DESCENDING)
-            .limit(2)
+            .limit(3)
 
         firstQuery
             .addSnapshotListener { value, error ->
@@ -109,7 +110,7 @@ class HomeFragment : Fragment() {
             .collection(COLLECTION_NAME)
             .orderBy("timestamp", Query.Direction.DESCENDING)
             .startAfter(lastVisible)
-            .limit(2)
+            .limit(3)
 
         firstQuery
             .addSnapshotListener { value, error ->
