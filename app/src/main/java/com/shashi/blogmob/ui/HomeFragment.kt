@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.DocumentChange
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.shashi.blogmob.BlogAdapter
@@ -25,6 +26,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var firebaseFirestore: FirebaseFirestore
     private val COLLECTION_NAME = "blogs"
+    private lateinit var lastVisible: DocumentSnapshot
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,6 +56,18 @@ class HomeFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(activity)
         recyclerView.adapter = blogAdapter
 
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                val isReachedBottom: Boolean = recyclerView.canScrollVertically(1)
+                if (isReachedBottom) {
+                    loadMorePost()
+                }
+
+            }
+        })
+
     }
 
     private fun getData() {
@@ -63,11 +77,14 @@ class HomeFragment : Fragment() {
         val firstQuery: Query = firebaseFirestore
             .collection(COLLECTION_NAME)
             .orderBy("timestamp", Query.Direction.DESCENDING)
+            .limit(2)
 
         firstQuery
             .addSnapshotListener { value, error ->
 
-                for (document in value!!.documentChanges) {
+                lastVisible = value!!.documents[value.size() - 1]
+
+                for (document in value.documentChanges) {
                     if (document.type == DocumentChange.Type.ADDED) {
                         val blogPostModel: BlogPostModel =
                             document.document.toObject(BlogPostModel::class.java)
@@ -83,6 +100,37 @@ class HomeFragment : Fragment() {
             }
 
         progressBar.visibility = View.GONE
+
+    }
+
+    private fun loadMorePost() {
+
+        val firstQuery: Query = firebaseFirestore
+            .collection(COLLECTION_NAME)
+            .orderBy("timestamp", Query.Direction.DESCENDING)
+            .startAfter(lastVisible)
+            .limit(2)
+
+        firstQuery
+            .addSnapshotListener { value, error ->
+
+                if (!value!!.isEmpty) {
+
+                    lastVisible = value.documents[value.size() - 1]
+
+                    for (document in value.documentChanges) {
+                        if (document.type == DocumentChange.Type.ADDED) {
+                            val blogPostModel: BlogPostModel =
+                                document.document.toObject(BlogPostModel::class.java)
+
+                            blogItems.add(blogPostModel)
+                        }
+
+                        blogAdapter.updateBlogList(blogItems)
+                    }
+
+                }
+            }
 
     }
 
