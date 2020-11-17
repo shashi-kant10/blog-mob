@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -28,6 +27,9 @@ class HomeFragment : Fragment() {
     private lateinit var firebaseFirestore: FirebaseFirestore
     private val COLLECTION_NAME = "blogs"
     private lateinit var lastVisible: DocumentSnapshot
+
+    //True only for the first time we load the data
+    private var isFirestPageFirstLoad: Boolean = true
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -83,19 +85,25 @@ class HomeFragment : Fragment() {
         firstQuery
             .addSnapshotListener { value, error ->
 
-                lastVisible = value!!.documents[value.size() - 1]
+                if (isFirestPageFirstLoad) {
+                    lastVisible = value!!.documents[value.size() - 1]
+                }
 
-                for (document in value.documentChanges) {
+                for (document in value!!.documentChanges) {
                     if (document.type == DocumentChange.Type.ADDED) {
                         val blogPostModel: BlogPostModel =
                             document.document.toObject(BlogPostModel::class.java)
 
-                        blogItems.add(blogPostModel)
+                        if (isFirestPageFirstLoad)
+                            blogItems.add(blogPostModel)
+                        else
+                            blogItems.add(0, blogPostModel)
                     }
 
                     blogAdapter.updateBlogList(blogItems)
                 }
 
+                isFirestPageFirstLoad = false
                 progressBar.visibility = View.GONE
 
             }
