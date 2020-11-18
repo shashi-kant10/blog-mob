@@ -7,7 +7,7 @@
 <div align="left">
 <br>
 
-BlogMob is a blogging app where users can post blogs. These blogs can contains texts as well as images.
+BlogMob is a blogging app where users can post blogs. These blogs can contain texts as well as images.
 
 Users can also like the blogs they love.
 
