@@ -47,6 +47,31 @@ Users can also visit each others' profile.
 </div>
 <div align="left">
 
+## Screenshots
+<br>
+
+<table>
+    <tr>
+        <td><img src = "/screenshots/bscreenshot1.png" ></td>
+        <td><img src = "/screenshots/bscreenshot2.png" ></td>
+        <td><img src = "/screenshots/bscreenshot3.png" ></td>
+    </tr>
+    <tr>
+        <td><img src = "/screenshots/bscreenshot4.png" ></td>
+        <td><img src = "/screenshots/bscreenshot5.png" ></td>
+        <td><img src = "/screenshots/bscreenshot6.png" ></td>
+    </tr>
+    <tr>
+        <td><img src = "/screenshots/bscreenshot7.png" ></td>
+        <td><img src = "/screenshots/bscreenshot8.png" ></td>
+        <td><img src = "/screenshots/bscreenshot9.png" ></td>
+    </tr>
+</table>    
+
+<br>
+<hr>
+<br>
+
 ## Libraries used and their documentation
 
 - [**CircleImageView**](https://github.com/hdodenhof/CircleImageView)
