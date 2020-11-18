@@ -1,63 +1,65 @@
-package com.shashi.blogmob.ui
+package com.shashi.blogmob.otheruser
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.ProgressBar
-import androidx.fragment.app.Fragment
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.shashi.blogmob.R
 import com.shashi.blogmob.model.BlogPostModel
+import de.hdodenhof.circleimageview.CircleImageView
 
-class HomeFragment : Fragment() {
+class OpenAccount : AppCompatActivity() {
 
     private lateinit var blogItems: ArrayList<BlogPostModel>
     private lateinit var blogId: ArrayList<String>
     private lateinit var recyclerView: RecyclerView
-    private lateinit var blogAdapter: BlogAdapter
+    private lateinit var blogAdapter: OtherAccountAdapter
 
-    private lateinit var progressBar: ProgressBar
-
-    private lateinit var firebaseFirestore: FirebaseFirestore
-    private val COLLECTION_NAME = "blogs"
     private lateinit var lastVisible: DocumentSnapshot
 
     //True only for the first time we load the data
     private var isFirestPageFirstLoad: Boolean = true
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    private lateinit var firebaseFirestore: FirebaseFirestore
+    private val COLLECTION_NAME_USERS = "users"
+    private val COLLECTION_NAME_BLOGS = "blogs"
 
-        val view = inflater.inflate(R.layout.fragment_home, container, false)
+    private lateinit var profileImageHeader: CircleImageView
+    private lateinit var textViewNameHeader: TextView
+
+    lateinit var userId: String
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_other_user)
+
+        userId = intent.getStringExtra("userId")!!
 
         firebaseFirestore = FirebaseFirestore.getInstance()
 
-        initViews(view)
-        getData()
+        initViews()
 
-        return view
+        updateUI(userId)
+        getData()
 
     }
 
-    private fun initViews(view: View) {
-
-        progressBar = view.findViewById(R.id.progress_bar_home)
+    private fun initViews() {
+        profileImageHeader = findViewById(R.id.circle_image_view_header_other_user)
+        textViewNameHeader = findViewById(R.id.text_view_name_header_other_user)
 
         blogItems = ArrayList()
         blogId = ArrayList()
-        blogAdapter = BlogAdapter()
+        blogAdapter = OtherAccountAdapter()
 
-        recyclerView = view.findViewById(R.id.recycler_view_home)
-        recyclerView.layoutManager = LinearLayoutManager(activity)
+        recyclerView = findViewById(R.id.recycler_view_other_user)
+        recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = blogAdapter
 
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -74,12 +76,46 @@ class HomeFragment : Fragment() {
 
     }
 
+    private fun updateUI(userId: String) {
+
+        firebaseFirestore
+            .collection(COLLECTION_NAME_USERS)
+            .document(userId)
+            .get()
+            .addOnSuccessListener { documentSnapshot -> //Check if the document exists
+                if (documentSnapshot.exists()) {
+
+                    var userName = documentSnapshot.getString("name")
+                    var imageUrl = documentSnapshot.getString("image")
+
+                    if (userName!!.isEmpty()) {
+                        userName = ""
+                    }
+                    if (imageUrl!!.isEmpty()) {
+                        imageUrl = ""
+                    }
+
+                    showData(userName, imageUrl)
+
+                }
+            }
+
+    }
+
+    private fun showData(userName: String, imageUrl: String) {
+
+        textViewNameHeader.text = userName
+
+        Glide.with(this)
+            .load(imageUrl)
+            .into(profileImageHeader)
+
+    }
+
     private fun getData() {
 
-        progressBar.visibility = View.VISIBLE
-
         val firstQuery: Query = firebaseFirestore
-            .collection(COLLECTION_NAME)
+            .collection(COLLECTION_NAME_BLOGS)
             .orderBy("timestamp", Query.Direction.DESCENDING)
             .limit(3)
 
@@ -97,12 +133,16 @@ class HomeFragment : Fragment() {
                             document.document.toObject(BlogPostModel::class.java)
                         val blogDocumentId: String = document.document.id
 
-                        if (isFirestPageFirstLoad) {
-                            blogItems.add(blogPostModel)
-                            blogId.add(blogDocumentId)
-                        } else {
-                            blogItems.add(0, blogPostModel)
-                            blogId.add(0, blogDocumentId)
+                        if (blogPostModel.user_id == userId) {
+
+                            if (isFirestPageFirstLoad) {
+                                blogItems.add(blogPostModel)
+                                blogId.add(blogDocumentId)
+                            } else {
+                                blogItems.add(0, blogPostModel)
+                                blogId.add(0, blogDocumentId)
+                            }
+
                         }
 
                     }
@@ -111,18 +151,14 @@ class HomeFragment : Fragment() {
                 }
 
                 isFirestPageFirstLoad = false
-                progressBar.visibility = View.GONE
-
             }
-
-        progressBar.visibility = View.GONE
 
     }
 
     private fun loadMorePost() {
 
         val newQuery: Query = firebaseFirestore
-            .collection(COLLECTION_NAME)
+            .collection(COLLECTION_NAME_BLOGS)
             .orderBy("timestamp", Query.Direction.DESCENDING)
             .startAfter(lastVisible)
             .limit(3)
@@ -140,8 +176,10 @@ class HomeFragment : Fragment() {
                                 document.document.toObject(BlogPostModel::class.java)
                             val blogDocumentId: String = document.document.id
 
-                            blogItems.add(blogPostModel)
-                            blogId.add(blogDocumentId)
+                            if (blogPostModel.user_id == userId) {
+                                blogItems.add(blogPostModel)
+                                blogId.add(blogDocumentId)
+                            }
                         }
 
                         blogAdapter.updateBlogList(blogItems, blogId)

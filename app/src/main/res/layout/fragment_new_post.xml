@@ -55,7 +55,7 @@
             android:hint="@string/add_description"
             android:importantForAutofill="no"
             android:inputType="textMultiLine"
-            android:maxLength="200"
+            android:maxLength="500"
             android:textColor="@color/black" />
 
         <Button

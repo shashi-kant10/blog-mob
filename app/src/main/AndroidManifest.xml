@@ -14,7 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BlogMob">
-        <activity android:name=".others.AboutActivity"></activity>
+        <activity android:name=".otheruser.OpenAccount"></activity>
+        <activity android:name=".others.AboutActivity" />
         <activity android:name=".login.GoogleSigninActivity" />
         <activity android:name=".login.LoginActivity" />
         <activity android:name=".login.ProfileActivity" />

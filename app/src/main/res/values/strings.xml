@@ -29,4 +29,6 @@
     <string name="logout_confirm_text">Are you sure you want to logout?</string>
     <string name="add_description">Add description</string>
     <string name="post_blog">Post Blog</string>
+    <string name="blog_posts">Blogfeed</string>
+    <string name="blogs">Blogs</string>
 </resources>

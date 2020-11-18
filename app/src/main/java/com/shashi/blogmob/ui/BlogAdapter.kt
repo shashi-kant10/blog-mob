@@ -1,6 +1,7 @@
-package com.shashi.blogmob
+package com.shashi.blogmob.ui
 
 import android.content.Context
+import android.content.Intent
 import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +14,9 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.shashi.blogmob.R
 import com.shashi.blogmob.model.BlogPostModel
+import com.shashi.blogmob.otheruser.OpenAccount
 import de.hdodenhof.circleimageview.CircleImageView
 import java.util.*
 import kotlin.collections.ArrayList
@@ -118,6 +121,12 @@ class BlogAdapter : RecyclerView.Adapter<BlogViewHolder>() {
 
                 }
 
+        }
+
+        holder.userProfileImage.setOnClickListener {
+            val intent = Intent(mContext, OpenAccount::class.java)
+            intent.putExtra("userId", userId)
+            mContext.startActivity(intent)
         }
 
     }
