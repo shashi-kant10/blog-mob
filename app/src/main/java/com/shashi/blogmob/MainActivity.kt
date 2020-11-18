@@ -25,6 +25,7 @@ import com.shashi.blogmob.login.LoginActivity
 import com.shashi.blogmob.login.ProfileActivity
 import com.shashi.blogmob.others.AboutActivity
 import com.shashi.blogmob.ui.HomeFragment
+import com.shashi.blogmob.ui.MyBlogFragment
 import com.shashi.blogmob.ui.NewPostFragment
 import com.shashi.blogmob.ui.UserProfileFragment
 import com.theartofdev.edmodo.cropper.CropImage
@@ -62,7 +63,8 @@ class MainActivity : AppCompatActivity() {
         bottomNavigation = findViewById(R.id.nav_view_main)
         bottomNavigation.add(MeowBottomNavigation.Model(1, R.drawable.ic_home))
         bottomNavigation.add(MeowBottomNavigation.Model(2, R.drawable.ic_new_post))
-        bottomNavigation.add(MeowBottomNavigation.Model(3, R.drawable.ic_profile))
+        bottomNavigation.add(MeowBottomNavigation.Model(3, R.drawable.icon_my_blogs))
+        bottomNavigation.add(MeowBottomNavigation.Model(4, R.drawable.ic_profile))
 
         bottomNavigation.show(1)
         addFragment()
@@ -79,7 +81,8 @@ class MainActivity : AppCompatActivity() {
         when (model.id) {
             1 -> fragment = HomeFragment()
             2 -> fragment = NewPostFragment()
-            3 -> fragment = UserProfileFragment()
+            3 -> fragment = MyBlogFragment()
+            4 -> fragment = UserProfileFragment()
         }
 
         supportFragmentManager

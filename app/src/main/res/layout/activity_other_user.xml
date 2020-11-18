@@ -42,7 +42,7 @@
         android:fontFamily="@font/montserrat"
         android:text="@string/blogs"
         android:textColor="@color/dark_blue_custom"
-        android:textSize="18sp"
+        android:textSize="16sp"
         app:drawableStartCompat="@drawable/icon_my_blogs" />
 
     <View

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ProgressBar
+        android:id="@+id/progress_bar_my_blog"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/dark_blue_custom"
+        android:indeterminateTintMode="src_atop"
+        android:visibility="invisible" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="4dp"
+        android:background="@color/white"
+        android:drawablePadding="5dp"
+        android:fontFamily="@font/montserrat"
+        android:text="@string/my_blogs"
+        android:textColor="@color/dark_blue_custom"
+        android:textSize="16sp"
+        app:drawableStartCompat="@drawable/icon_my_blogs" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_my_blog"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="2dp"
+        android:background="@color/grey_custom" />
+
+</LinearLayout>

@@ -1,4 +1,4 @@
-package com.shashi.blogmob.otheruser
+package com.shashi.blogmob.ui
 
 import android.content.Context
 import android.text.format.DateFormat
@@ -19,7 +19,7 @@ import de.hdodenhof.circleimageview.CircleImageView
 import java.util.*
 import kotlin.collections.ArrayList
 
-class OtherAccountAdapter : RecyclerView.Adapter<OtherAccountViewHolder>() {
+class MyBlogAdapter : RecyclerView.Adapter<MyBlogViewHolder>() {
 
     private val blogItems: ArrayList<BlogPostModel> = ArrayList()
     private val blogId: ArrayList<String> = ArrayList()
@@ -30,11 +30,11 @@ class OtherAccountAdapter : RecyclerView.Adapter<OtherAccountViewHolder>() {
 
     private lateinit var mContext: Context
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OtherAccountViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyBlogViewHolder {
 
         val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.blog_list_item, parent, false)
-        val viewHolder = OtherAccountViewHolder(view)
+            LayoutInflater.from(parent.context).inflate(R.layout.my_blog_list_item, parent, false)
+        val viewHolder = MyBlogViewHolder(view)
 
         mContext = parent.context
         firebaseFirestore = FirebaseFirestore.getInstance()
@@ -44,7 +44,7 @@ class OtherAccountAdapter : RecyclerView.Adapter<OtherAccountViewHolder>() {
         return viewHolder
     }
 
-    override fun onBindViewHolder(holder: OtherAccountViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: MyBlogViewHolder, position: Int) {
         val description = blogItems.get(position).desc
         val image_url = blogItems.get(position).image_url
         val userId = blogItems.get(position).user_id
@@ -118,7 +118,6 @@ class OtherAccountAdapter : RecyclerView.Adapter<OtherAccountViewHolder>() {
                     }
 
                 }
-
         }
 
     }
@@ -144,15 +143,15 @@ class OtherAccountAdapter : RecyclerView.Adapter<OtherAccountViewHolder>() {
     }
 }
 
-class OtherAccountViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class MyBlogViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    val userProfileImage: CircleImageView = itemView.findViewById(R.id.circle_image_view_blog_item)
-    val userNameTextView: TextView = itemView.findViewById(R.id.text_View_username_blog_item)
-    val blogTime: TextView = itemView.findViewById(R.id.text_View_time_blog_item)
-    val blogImageView: ImageView = itemView.findViewById(R.id.image_view_blog_item)
-    val blogDescription: TextView = itemView.findViewById(R.id.text_View_description_blog_item)
-    val blogLike: ImageView = itemView.findViewById(R.id.image_view_like_blog_item)
-    val blogLikeCount: TextView = itemView.findViewById(R.id.text_view_like_count)
+    val userProfileImage: CircleImageView = itemView.findViewById(R.id.circle_image_view_my_blog)
+    val userNameTextView: TextView = itemView.findViewById(R.id.text_View_username_my_blog)
+    val blogTime: TextView = itemView.findViewById(R.id.text_View_time_my_blog)
+    val blogImageView: ImageView = itemView.findViewById(R.id.image_view_my_blog)
+    val blogDescription: TextView = itemView.findViewById(R.id.text_View_description_my_blog)
+    val blogLike: ImageView = itemView.findViewById(R.id.image_view_like_my_blog)
+    val blogLikeCount: TextView = itemView.findViewById(R.id.text_view_like_count_my_blog)
 
     fun showUserName(userId: String) {
 
