@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -120,6 +121,12 @@ class MyBlogAdapter : RecyclerView.Adapter<MyBlogViewHolder>() {
                 }
         }
 
+        holder
+            .imageViewDelete
+            .setOnClickListener {
+                deleteBlogPost(currentBlogId, position)
+            }
+
     }
 
     override fun getItemCount(): Int {
@@ -134,6 +141,28 @@ class MyBlogAdapter : RecyclerView.Adapter<MyBlogViewHolder>() {
         blogId.addAll(updatedId)
 
         notifyDataSetChanged()
+    }
+
+    fun deleteBlogPost(currentBlogId: String, position: Int) {
+
+        firebaseFirestore
+            .collection("blogs")
+            .document(currentBlogId)
+            .delete()
+            .addOnCompleteListener {
+
+                if (it.isSuccessful) {
+                    Toast.makeText(mContext, "Blog deleted", Toast.LENGTH_SHORT).show()
+
+                    blogItems.removeAt(position)
+                    blogId.removeAt(position)
+
+                    notifyDataSetChanged()
+
+                } else {
+                    Toast.makeText(mContext, "Could not delete blog", Toast.LENGTH_SHORT).show()
+                }
+            }
     }
 
     private fun getDate(timestamp: Long): String {
@@ -152,6 +181,7 @@ class MyBlogViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val blogDescription: TextView = itemView.findViewById(R.id.text_View_description_my_blog)
     val blogLike: ImageView = itemView.findViewById(R.id.image_view_like_my_blog)
     val blogLikeCount: TextView = itemView.findViewById(R.id.text_view_like_count_my_blog)
+    val imageViewDelete: ImageView = itemView.findViewById(R.id.image_view_delete_my_blog)
 
     fun showUserName(userId: String) {
 
