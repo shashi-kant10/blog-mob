@@ -7,9 +7,8 @@
 <div align="left">
 <br>
 
-BlogMob is a blogging app where users can post blogs. These blogs can contain texts as well as images.
-
-Users can also like the blogs they love.
+BlogMob is a blogging app where users can post blogs and like the blogs they love. These blogs can contain texts as well as images. <br>
+Users can also visit each others' profile.
 
 <br>
 <hr>
@@ -17,13 +16,14 @@ Users can also like the blogs they love.
 
 ## Features⚡️
 
-- Signup with Mail (Verification link sent to mail) & Gmail
-- Signin (Gmail & Other mails)
-- Create user profile (Profile Name & Image)
-- Update user profile
+- Signup/Signin (Gmail & Other mails)
+- Create/Update user profile
+- Read others' blog in Blogfeed
 - Write blogs
-- View other people's blogs
 - Like blogs you love
+- View other users' profile
+- View your blogs
+- Delete your post
 - Pagination for infinite scrolling
 - Logout
 
@@ -61,6 +61,11 @@ Users can also like the blogs they love.
         <td><img src = "/screenshots/screenshot5.png" ></td>
         <td><img src = "/screenshots/screenshot6.png" ></td>
     </tr>
+    <tr>
+        <td><img src = "/screenshots/screenshot7.png" ></td>
+        <td><img src = "/screenshots/screenshot8.png" ></td>
+        <td><img src = "/screenshots/screenshot9.png" ></td>
+    </tr>
 </table>    
 
 <br>
@@ -79,10 +84,6 @@ Users can also like the blogs they love.
 
 - [**Android Image Cropper**](https://github.com/ArthurHub/Android-Image-Cropper)
 
-- [**Firebase Authentication**](https://firebase.google.com/docs/auth/android/start)
-
-- [**Cloud Firestore**](https://firebase.google.com/docs/firestore/quickstart)
-
-- [**Firebase Storage**](https://firebase.google.com/docs/storage/android/start)
+- [**Firebase**](https://firebase.google.com/docs/android/setup)
 
 </div>
